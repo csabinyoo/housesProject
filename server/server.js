@@ -52,6 +52,25 @@ app.get("/houses/:id", (req, res) => {
     connection.release();
   });
 });
+
+app.delete("/houses/:id", (req, res) => {
+  const id = req.params.id;
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingInfo(res, 0, "server error", [], 403);
+      return;
+    }
+
+    const sql = `
+    DELETE from houses
+    WHERE id = ?
+  `;
+    connection.query(sql, [id], (error, results, fields) => {
+      sendingDelete(res, error, results, id)
+    });
+    connection.release();
+  });
+});
 //#endregion houses
 
 function mySanitizeHtml(data) {
