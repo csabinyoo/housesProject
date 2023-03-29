@@ -69,4 +69,5 @@ delete from houses;
 select hs.ID, ss.Name Type, ts.Name Category, Settlement, cs.Name, hs.Rooms, hs.parcelNumber, hs.Area, hs.Price from houses hs
 inner join counties cs on hs.countyID = cs.id
 inner join types ts on hs.typeID = ts.id
-inner join sales ss on hs.saleID = ss.id;
+inner join sales ss on hs.saleID = ss.id
+order by hs.ID;
