@@ -1,0 +1,40 @@
+### get all houses
+get http://localhost:3000/houses
+
+### get house by id
+get http://localhost:3000/houses/3
+
+### delete house by id
+DELETE http://localhost:3000/houses/6
+
+### post house
+post http://localhost:3000/houses
+Content-Type: application/json
+
+{
+    "ID": 6,
+    "saleID": 3,
+    "typeID": 2,
+    "Settlement": "Zagyvarékas",
+    "countyID": 1,
+    "Rooms": 3,
+    "parcelNumber": "32-42486-4814",
+    "Area": 736,
+    "Price": 98 000 000
+}
+
+### put a house
+put http://localhost:3000/houses/6
+Content-Type: application/json
+
+{
+    "ID": 6,
+    "saleID": 3,
+    "typeID": 2,
+    "Settlement": "Zagyvarékas",
+    "countyID": 1,
+    "Rooms": 3,
+    "parcelNumber": "32-42486-4814",
+    "Area": 736,
+    "Price": 98 000 000
+}
