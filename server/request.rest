@@ -13,14 +13,14 @@ Content-Type: application/json
 
 {
     "ID": 6,
-    "saleID": 3,
-    "typeID": 2,
-    "Settlement": "Zagyvarékas",
-    "countyID": 1,
+    "saleID": 1,
+    "typeID": 6,
+    "Settlement": "Salgótarján",
+    "countyID": 5,
     "Rooms": 3,
-    "parcelNumber": "32-42486-4814",
-    "Area": 736,
-    "Price": 98 000 000
+    "parcelNumber": "95-57441-0135",
+    "Area": 187,
+    "Price": 42500000
 }
 
 ### put a house
@@ -29,12 +29,12 @@ Content-Type: application/json
 
 {
     "ID": 6,
-    "saleID": 3,
-    "typeID": 2,
-    "Settlement": "Zagyvarékas",
-    "countyID": 1,
+    "saleID": 1,
+    "typeID": 6,
+    "Settlement": "Salgótarján",
+    "countyID": 5,
     "Rooms": 3,
-    "parcelNumber": "32-42486-4814",
-    "Area": 736,
-    "Price": 98 000 000
+    "parcelNumber": "95-57441-0135",
+    "Area": 187,
+    "Price": 42500000
 }

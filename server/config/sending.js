@@ -59,6 +59,7 @@ function sendingPost(res, error, result, newR) {
 function sendingPut(res, error, result, id, newR) {
   if (error) {
     const response = new Response(0, "sql error", []);
+    console.log(error);
     res.send(response);
     return;
   }
