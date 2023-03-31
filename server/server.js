@@ -27,7 +27,13 @@ app.get("/houses", (req, res) => {
       sendingInfo(res, 0, "server error", [], 403)
       return;
     }
-    const sql = "SELECT * FROM houses";
+    const sql = `
+    select hs.ID, ss.Name Type, ts.Name Category, Settlement, cs.Name, hs.Rooms, hs.parcelNumber, hs.Area, hs.Price from houses hs
+    inner join counties cs on hs.countyID = cs.id
+    inner join types ts on hs.typeID = ts.id
+    inner join sales ss on hs.saleID = ss.id
+    order by hs.ID;
+    `;
     connection.query(sql, (error, results, fields) => {
       sendingGet(res, error, results);
     });
@@ -43,9 +49,12 @@ app.get("/houses/:id", (req, res) => {
       return;
     }
     const sql = `
-    SELECT * FROM houses
-    WHERE id = ?
-  `;
+    select hs.ID, ss.Name Type, ts.Name Category, Settlement, cs.Name, hs.Rooms, hs.parcelNumber, hs.Area, hs.Price from houses hs
+    inner join counties cs on hs.countyID = cs.id
+    inner join types ts on hs.typeID = ts.id
+    inner join sales ss on hs.saleID = ss.id
+    WHERE hs.ID = ?
+    `;
     connection.query(sql, [id], (error, results, fields) => {
       sendingGetById(res, error, results, id)
     });
@@ -91,7 +100,6 @@ app.post("/houses", (req, res) => {
 app.put("/houses/:id", (req, res) => {
   const id = req.params.id;
   const newR = {
-    ID: +mySanitizeHtml(req.body.ID),
     saleID: +mySanitizeHtml(req.body.saleID),
     typeID: +mySanitizeHtml(req.body.typeID),
     Settlement: mySanitizeHtml(req.body.Settlement),
@@ -109,7 +117,6 @@ app.put("/houses/:id", (req, res) => {
 
     const sql = `
     UPDATE houses SET
-    ID = ?, 
     saleID = ?, 
     typeID = ?, 
     Settlement = ?, 
@@ -122,7 +129,7 @@ app.put("/houses/:id", (req, res) => {
   `;
     connection.query(
       sql,
-      [newR.ID, newR.saleID, newR.typeID, newR.Settlement, newR.countyID, newR.Rooms, newR.parcelNumber, newR.Area, newR.Price, id],
+      [newR.saleID, newR.typeID, newR.Settlement, newR.countyID, newR.Rooms, newR.parcelNumber, newR.Area, newR.Price, id],
       (error, results, fields) => {
         sendingPut(res, error, results, id, newR)
       }
@@ -150,6 +157,222 @@ app.delete("/houses/:id", (req, res) => {
   });
 });
 //#endregion houses
+
+//#region counties
+app.get("/counties", (req, res) => {
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingInfo(res, 0, "server error", [], 403)
+      return;
+    }
+    const sql = "SELECT * FROM counties";
+    connection.query(sql, (error, results, fields) => {
+      sendingGet(res, error, results);
+    });
+    connection.release();
+  });
+});
+
+app.get("/counties/:id", (req, res) => {
+  const id = req.params.id;
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingInfo(res, 0, "server error", [], 403)
+      return;
+    }
+    const sql = `
+    SELECT * FROM counties
+    WHERE id = ?
+  `;
+    connection.query(sql, [id], (error, results, fields) => {
+      sendingGetById(res, error, results, id)
+    });
+    connection.release();
+  });
+});
+
+app.post("/counties", (req, res) => {
+  const newR = {
+    ID: +mySanitizeHtml(req.body.ID),
+    Name: mySanitizeHtml(req.body.Name)
+  };
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingInfo(res, 0, "server error", [], 403);
+      return;
+    }
+    const sql = `
+    INSERT INTO counties
+      (ID, Name)
+      VALUES
+      (?, ?)
+    `;
+    connection.query(
+      sql,
+      [newR.ID, newR.Name],
+      (error, results, fields) => {
+        sendingPost(res, error, results, newR);
+      }
+    );
+    connection.release();
+  });
+});
+
+app.put("/counties/:id", (req, res) => {
+  const id = req.params.id;
+  const newR = {
+    Name: mySanitizeHtml(req.body.Name)
+  };
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingInfo(res, 0, "server error", [], 403);
+      return;
+    }
+
+    const sql = `
+    UPDATE counties SET
+    Name = ?
+    WHERE id = ?
+  `;
+    connection.query(
+      sql,
+      [newR.Name, id],
+      (error, results, fields) => {
+        sendingPut(res, error, results, id, newR)
+      }
+    );
+    connection.release();
+  });
+});
+
+app.delete("/counties/:id", (req, res) => {
+  const id = req.params.id;
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingInfo(res, 0, "server error", [], 403);
+      return;
+    }
+
+    const sql = `
+    DELETE from counties
+    WHERE id = ?
+  `;
+    connection.query(sql, [id], (error, results, fields) => {
+      sendingDelete(res, error, results, id)
+    });
+    connection.release();
+  });
+});
+//#endregion counties
+
+//#region types
+app.get("/types", (req, res) => {
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingInfo(res, 0, "server error", [], 403)
+      return;
+    }
+    const sql = "SELECT * FROM types";
+    connection.query(sql, (error, results, fields) => {
+      sendingGet(res, error, results);
+    });
+    connection.release();
+  });
+});
+
+app.get("/types/:id", (req, res) => {
+  const id = req.params.id;
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingInfo(res, 0, "server error", [], 403)
+      return;
+    }
+    const sql = `
+    SELECT * FROM types
+    WHERE id = ?
+  `;
+    connection.query(sql, [id], (error, results, fields) => {
+      sendingGetById(res, error, results, id)
+    });
+    connection.release();
+  });
+});
+
+app.post("/types", (req, res) => {
+  const newR = {
+    ID: +mySanitizeHtml(req.body.ID),
+    Name: mySanitizeHtml(req.body.Name)
+  };
+
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingInfo(res, 0, "server error", [], 403);
+      return;
+    }
+    const sql = `
+    INSERT INTO types
+      (ID, Name)
+      VALUES
+      (?, ?)
+    `;
+    connection.query(
+      sql,
+      [newR.ID, newR.Name],
+      (error, results, fields) => {
+        sendingPost(res, error, results, newR);
+      }
+    );
+    connection.release();
+  });
+});
+
+app.put("/types/:id", (req, res) => {
+  const id = req.params.id;
+  const newR = {
+    Name: mySanitizeHtml(req.body.Name)
+  };
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingInfo(res, 0, "server error", [], 403);
+      return;
+    }
+
+    const sql = `
+    UPDATE types SET
+    Name = ?
+    WHERE id = ?
+  `;
+    connection.query(
+      sql,
+      [newR.Name, id],
+      (error, results, fields) => {
+        sendingPut(res, error, results, id, newR)
+      }
+    );
+    connection.release();
+  });
+});
+
+app.delete("/types/:id", (req, res) => {
+  const id = req.params.id;
+  pool.getConnection(function (error, connection) {
+    if (error) {
+      sendingInfo(res, 0, "server error", [], 403);
+      return;
+    }
+
+    const sql = `
+    DELETE from types
+    WHERE id = ?
+  `;
+    connection.query(sql, [id], (error, results, fields) => {
+      sendingDelete(res, error, results, id)
+    });
+    connection.release();
+  });
+});
+//#endregion types
 
 function mySanitizeHtml(data) {
   return sanitizeHtml(data, {

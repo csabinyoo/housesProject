@@ -1,3 +1,5 @@
+################################################ HOUSES ################################################
+
 ### get all houses
 get http://localhost:3000/houses
 
@@ -28,13 +30,74 @@ put http://localhost:3000/houses/6
 Content-Type: application/json
 
 {
-    "ID": 6,
     "saleID": 1,
     "typeID": 6,
-    "Settlement": "Salgótarján",
+    "Settlement": "Salgótarján2",
     "countyID": 5,
     "Rooms": 3,
     "parcelNumber": "95-57441-0135",
     "Area": 187,
     "Price": 42500000
 }
+
+################################################ HOUSES ################################################
+
+################################################ COUNTIES ################################################
+
+### get all counties
+get http://localhost:3000/counties
+
+### get county by id
+get http://localhost:3000/counties/3
+
+### delete county by id
+DELETE http://localhost:3000/counties/6
+
+### post county
+post http://localhost:3000/counties
+Content-Type: application/json
+
+{
+    "ID": 6,
+    "Name": "Békés vármegye"
+}
+
+### put a county
+put http://localhost:3000/counties/6
+Content-Type: application/json
+
+{
+    "Name": "Békés vármegye2"
+}
+
+################################################ COUNTIES ################################################
+
+################################################ TYPES ################################################
+
+### get all types
+get http://localhost:3000/types
+
+### get type by id
+get http://localhost:3000/types/3
+
+### delete type by id
+DELETE http://localhost:3000/types/8
+
+### post type
+post http://localhost:3000/types
+Content-Type: application/json
+
+{
+    "ID": 8,
+    "Name": "Teszt"
+}
+
+### put a type
+put http://localhost:3000/types/8
+Content-Type: application/json
+
+{
+    "Name": "Teszt2"
+}
+
+################################################ TYPES ################################################
