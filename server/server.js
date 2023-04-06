@@ -22,6 +22,7 @@ app.use(express.json());
 
 //#region houses
 app.get("/houses", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
   pool.getConnection(function (error, connection) {
     if (error) {
       sendingInfo(res, 0, "server error", [], 403)
